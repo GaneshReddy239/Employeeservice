@@ -1,0 +1,24 @@
+spring:
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+    properties:
+      hibernate:
+        format_sql: true
+country:
+  service:
+    base-url: https://restcountries.com/v3.1/name
+department:
+  service:
+    url: ${DEPARTMENT_SERVICE_URL:http://localhost:5052}
+
+server:
+  port: 6052
+
