@@ -205,6 +205,14 @@
                 </artifactId>
 
                 <version>10.0.4</version>
+                <configuration>
+
+                    <ossindexAnalyzerEnabled>
+                        false
+                    </ossindexAnalyzerEnabled>
+
+                </configuration>
+
 
                 <executions>
                     <execution>
