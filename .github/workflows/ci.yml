@@ -1,0 +1,93 @@
+name: Employee Service CI
+
+on:
+  push:
+    branches: [ main ]
+
+  pull_request:
+    branches: [ main ]
+
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+
+    steps:
+
+      # Checkout source
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+
+
+      # Java + Maven cache
+      - name: Setup Java 17
+
+        uses: actions/setup-java@v4
+
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+
+
+      # Build + Tests + JaCoCo + Coverage threshold
+      - name: Build and verify
+
+        run: mvn clean verify
+
+
+
+      # Upload JUnit reports
+      - name: Upload test reports
+
+        if: always()
+
+        uses: actions/upload-artifact@v4
+
+        with:
+          name: junit-results
+          path: target/surefire-reports/
+
+
+
+      # Upload JaCoCo coverage reports
+      - name: Upload coverage report
+
+        if: always()
+
+        uses: actions/upload-artifact@v4
+
+        with:
+          name: jacoco-report
+          path: target/site/jacoco/
+
+
+
+      # Upload generated jar
+      - name: Upload application artifact
+
+        uses: actions/upload-artifact@v4
+
+        with:
+          name: employee-service-jar
+          path: target/*.jar
+
+
+
+      # Print build metadata
+      - name: Build info
+
+        run: |
+
+          echo "Build successful"
+
+          echo "Commit: ${{ github.sha }}"
+
+          echo "Branch: ${{ github.ref_name }}"
+
+          echo "Triggered by: ${{ github.actor }}"
